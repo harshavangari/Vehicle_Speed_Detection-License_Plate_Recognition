@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Tracking and Speed Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff; /* White background for content */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
+            margin-top: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="file"],
+        input[type="submit"] {
+            width: calc(100% - 16px); /* Adjusting for padding */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc; /* Light gray border */
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box; /* Include padding and border in width */
+        }
+        input[type="submit"] {
+            background-color: #4CAF50; /* Green submit button */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .video-feed,
+        .image-result {
+            text-align: center;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vehicle Tracking and Speed Detection</h1>
+        <form action="/video_feed" method="post" enctype="multipart/form-data">
+            <label for="speed_limit">Speed Limit (km/hr):</label>
+            <input type="text" id="speed_limit" name="speed_limit" required>
+            <label for="video_file">Upload Video:</label>
+            <input type="file" id="video_file" name="video_file" accept="video/*" required>
+            <input type="submit" value="Upload and Process Video">
+        </form>
+        <div class="video-feed">
+            <a href="/exceeded_images">View Exceeded Speed Images</a>
+        </div>
+        <h1>License-Plate-Recognition</h1>
+        <form action="/image_process" method="post" enctype="multipart/form-data">
+            <label for="image_file">Upload Image:</label>
+            <input type="file" id="image_file" name="image_file" accept="image/*" required>
+            <input type="submit" value="Upload and Extract Text">
+        </form>
+        <div class="image-result">
+            {% if uploaded_image %}
+                <h2>Uploaded Image:</h2>
+                <img src="{{ url_for('uploaded_file', filename=uploaded_image) }}" alt="Uploaded Image">
+            {% endif %}
+            {% if processed_image %}
+                <h2>Processed Image:</h2>
+                <img src="{{ url_for('uploaded_file', filename=processed_image) }}" alt="Processed Image">
+            {% endif %}
+            <h2>Extracted Text:</h2>
+            <p>{{ extracted_text }}</p>
+        </div>
+    </div>
+    <script>
+        const form = document.querySelector('form[action="/"]');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/', {
+                method: 'POST',
+                body: formData
+            });
+            const text = await response.text();
+            document.getElementById('extracted_text').innerText = text;
+        });
+    </script>
+</body>
+</html>

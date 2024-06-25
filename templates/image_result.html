@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff; /* White background for content */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
+            margin-top: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .image-result {
+            text-align: center;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Processing Result</h1>
+        <div class="image-result">
+            <h2>Uploaded Image:</h2>
+            <img src="{{ url_for('send_image', filename=uploaded_image) }}" alt="Uploaded Image">
+        </div>
+        <div class="image-result">
+            <h2>Processed Image:</h2>
+            <img src="{{ url_for('send_image', filename=processed_image) }}" alt="Processed Image">
+        </div>
+        <div class="image-result">
+            <h2>Extracted Text:</h2>
+            <p>{{ extracted_text }}</p>
+        </div>
+        <div class="image-result">
+            <a href="/">Back to Upload</a>
+        </div>
+    </div>
+</body>
+</html>
